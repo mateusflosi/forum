@@ -1,28 +1,27 @@
-package Model;
+ackage Model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComentarioDAO {
     
-    public Map<String,String> comentariosDoTopico(int id)
+    public List<Comentario> comentariosDoTopico(int id)
     {
-        Map<String,String> comentarios = new HashMap<>();
-        
+        List<Comentario> comentarios = new ArrayList<>();
         try(Connection c = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT LOGIN,COMENTARIO FROM comentario WHERE id_topico=?;";
+            String sql = "SELECT * FROM comentario WHERE id_topico=?;";
             PreparedStatement stm = c.prepareStatement(sql);
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             while(rs.next())
             {
-                comentarios.put(rs.getString("login"),rs.getString("comentario"));
+                comentarios.add(preencheComentario(rs));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possivel realizar a conexão", e);
@@ -48,5 +47,18 @@ public class ComentarioDAO {
     private boolean isVazio(String comentario, String login) {
         if(comentario.equals("")) return true;
         return login.equals("");
+    }
+
+    private Comentario preencheComentario(ResultSet rs) {
+        Comentario c = new Comentario();
+        try {
+            c.setComentario(rs.getString("comentario"));
+            c.setId(rs.getInt("id_comentario"));
+            c.setLogin(rs.getString("login"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return c;
     }
 }
