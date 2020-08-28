@@ -7,6 +7,10 @@
         <title>Ranking</title>
     </head>
     <body>
+        <form action="topicos">
+            <input type="hidden" name="login" value="${param.login}"/>
+            <input id="voltar" type="submit" value="voltar">
+        </form>
         <h1>Confira sua pontuação e colocação no ranking</h1>
         <table style="width:50%">
             <tr>
@@ -17,10 +21,10 @@
             </tr>
             <c:forEach var="item" items="${ranking}" >
             <tr>
-                <td>${item.colocacao}</td>        
-                <td>${item.nome}</td>
-                <td>${item.login}</td>
-                <td>${item.pontos}</td>
+                <td id="${item.colocacao}">${item.colocacao}</td>        
+                <td id="${item.nome}">${item.nome}</td>
+                <td id="${item.login}">${item.login}</td>
+                <td id="pontos_${item.login}">${item.pontos}</td>
             </tr>
             </c:forEach>
         </table>
