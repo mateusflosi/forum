@@ -19,19 +19,21 @@ public class comentarServlet extends HttpServlet {
         UsuarioDAO u = new UsuarioDAO();
         String titulo = (String) request.getParameter("titulo");
         String login = (String) request.getParameter("login");
+        String conteudo = (String) request.getParameter("conteudo");
+        String id = (String) request.getParameter("id");
         String comentario = (String) request.getParameter("novoComentario");
         
         try{
-            c.inserir(comentario, login, t.getId(titulo));
+            c.inserir(comentario, login, Integer.parseInt(id));
             u.adicionaPontos(login, 3);
-            request.setAttribute("titulo", titulo);
-            request.setAttribute("login", login);
-            request.getRequestDispatcher("exibeTopico").forward(request,response);
         } catch(Exception e) {
             request.setAttribute("erro", e.getMessage());
-            request.setAttribute("titulo", titulo);
-            request.setAttribute("login", login);
-            request.getRequestDispatcher("exibeTopico").forward(request,response);
         }
+        
+        request.setAttribute("titulo", titulo);
+        request.setAttribute("login", login);
+        request.setAttribute("conteudo", conteudo);
+        request.setAttribute("id", id);
+        request.getRequestDispatcher("exibeTopico").forward(request,response);
     }
 }
