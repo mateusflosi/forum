@@ -37,6 +37,4 @@ public class topicosServlet extends HttpServlet {
         String login = (String) request.getParameter("login");
         process(request, response, login);
     }
-    
-    
 }
