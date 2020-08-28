@@ -6,6 +6,10 @@
         <title>Novo Topico</title>
     </head>
     <body>
+        <form action="topicos">
+            <input type="hidden" name="login" value="${param.login}"/>
+            <input type="submit" value="voltar">
+        </form>
         <h1>Deseja começar um novo topico ${param.login}?</h1>
         <h4>${erro}</h4>
         <form method="POST" action="inserirTopico">
@@ -14,7 +18,7 @@
             <textarea type="text" name="conteudo" rows="25" cols="100"></textarea>
             <br> <br>
             <input type="hidden" name="login" value="${param.login}"/>
-            <input type="submit" value="inserir">
+            <input id="inserir" type="submit" value="inserir">
         </form>
     </body>
 </html>
