@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class TopicosDAO {
@@ -38,18 +36,18 @@ public class TopicosDAO {
         }
     }
     
-    public List<String> topicosDoUsuario(String login)
+    public List<Topico> topicosDoUsuario(String login)
     {
-        List<String> topicos = new ArrayList<>();
+        List<Topico> topicos = new ArrayList<>();
         try(Connection c = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT TITULO FROM topico WHERE login=?;";
+            String sql = "SELECT * FROM topico WHERE login=?;";
             PreparedStatement stm = c.prepareStatement(sql);
             stm.setString(1, login);
             ResultSet rs = stm.executeQuery();
             while(rs.next())
             {
-                topicos.add(rs.getString("titulo"));
+                topicos.add(preencheTopico(rs));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possivel realizar a conexão", e);
@@ -57,18 +55,18 @@ public class TopicosDAO {
         return topicos;
     }
 
-    public Map<String,String> outrosTopicos(String login)
+    public List<Topico> outrosTopicos(String login)
     {
-        Map<String, String> outrosTopicos = new HashMap<>();
+        List<Topico> outrosTopicos = new ArrayList<>();
         try(Connection c = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT TITULO, LOGIN FROM topico WHERE login!=?;";
+            String sql = "SELECT * FROM topico WHERE login!=?;";
             PreparedStatement stm = c.prepareStatement(sql);
             stm.setString(1, login);
             ResultSet rs = stm.executeQuery();
             while(rs.next())
             {
-                outrosTopicos.put(rs.getString("titulo"),rs.getString("login"));
+                outrosTopicos.add(preencheTopico(rs));
             }
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possivel realizar a conexão", e);
@@ -77,46 +75,16 @@ public class TopicosDAO {
         return outrosTopicos;   
     }
     
-    public String getConteudo(String titulo)
+    public String getLogin(int id)
     {
         try(Connection c = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT CONTEUDO FROM topico WHERE titulo=?;";
+            String sql = "SELECT LOGIN FROM topico WHERE id_topico=?;";
             PreparedStatement stm = c.prepareStatement(sql);
-            stm.setString(1, titulo);
-            ResultSet rs = stm.executeQuery();
-            rs.next();
-            return rs.getString("conteudo");
-        } catch (SQLException e) {
-            throw new RuntimeException("Não foi possivel realizar a conexão", e);
-        }
-    }
-    
-    public String getLogin(String titulo)
-    {
-        try(Connection c = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT LOGIN FROM topico WHERE titulo=?;";
-            PreparedStatement stm = c.prepareStatement(sql);
-            stm.setString(1, titulo);
+            stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             rs.next();
             return rs.getString("login");
-        } catch (SQLException e) {
-            throw new RuntimeException("Não foi possivel realizar a conexão", e);
-        }
-    }
-    
-     public int getId(String titulo)
-    {
-        try(Connection c = DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5432/coursera","postgres","senha")){
-            String sql = "SELECT id_topico FROM topico WHERE titulo=?;";
-            PreparedStatement stm = c.prepareStatement(sql);
-            stm.setString(1, titulo);
-            ResultSet rs = stm.executeQuery();
-            rs.next();
-            return rs.getInt("id_topico");
         } catch (SQLException e) {
             throw new RuntimeException("Não foi possivel realizar a conexão", e);
         }
@@ -131,5 +99,19 @@ public class TopicosDAO {
     private int getId() {
         Random rm = new Random();
         return rm.nextInt(2099999998) + 1;
+    }
+
+    private Topico preencheTopico(ResultSet rs) {
+        Topico t = new Topico();
+        try{
+            t.setConteudo(rs.getString("conteudo"));
+            t.setId(rs.getInt("id_topico"));
+            t.setLogin(rs.getString("login"));
+            t.setTitulo(rs.getString("titulo"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return t;
     }
 }
