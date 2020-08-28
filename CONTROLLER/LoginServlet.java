@@ -25,8 +25,6 @@ public class LoginServlet extends HttpServlet {
         } catch(Exception ex){
             request.setAttribute("erro", ex.getMessage());
             request.getRequestDispatcher("index.jsp").forward(request,response);
-        }
-        
-        
+        }       
     }
 }
