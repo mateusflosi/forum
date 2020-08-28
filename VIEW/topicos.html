@@ -7,6 +7,7 @@
         <title>Topicos</title>
     </head>
     <body>
+        <a href="http://localhost:8080/forum/">Sair</a>
         <h1>Bem vindo ${nome}</h1>
         <table>
             <tr>
@@ -16,9 +17,11 @@
             <tr>
                 <td>
                     <form action="exibeTopico">
-                        <input type="hidden" name="titulo" value="${item}" />
+                        <input type="hidden" name="titulo" value="${item.titulo}"/>
+                        <input type="hidden" name="conteudo" value="${item.conteudo}"/>
+                        <input type="hidden" name="id" value="${item.id}"/>
                         <input type="hidden" name="login" value="${login}"/>
-                        <input type="submit" value="${item}">
+                        <input id="${item.id}" type="submit" value="${item.titulo}">
                     </form>
                 </td>
             </tr>
@@ -34,22 +37,25 @@
             <tr>
                 <td>
                     <form action="exibeTopico">
-                        <input type="hidden" name="titulo" value="${item.key}" />
+                        <input type="hidden" name="titulo" value="${item.titulo}"/>
+                        <input type="hidden" name="conteudo" value="${item.conteudo}"/>
+                        <input type="hidden" name="id" value="${item.id}"/>
                         <input type="hidden" name="login" value="${login}" />
-                        <input type="submit" value="${item.key}">
+                        <input id="${item.id}" type="submit" value="${item.titulo}">
                     </form>
                 </td>
-                <td>${item.value}</td>
+                <td>${item.login}</td>
             </tr>
             </c:forEach>
         </table>
         <br> <br>
         <form action="insereTopico.jsp">
             <input type="hidden" name="login" value="${login}" />
-            <input type="submit" value="Começar novo topico">
+            <input id="insereTopico" type="submit" value="Começar novo topico">
         </form>
         <form action="Ranking">
-            <input type="submit" value="Ranking">
+            <input type="hidden" name="login" value="${login}" />
+            <input id="ranking" type="submit" value="Ranking">
         </form>
         <br> <br>
     </body>
