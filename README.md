@@ -1,6 +1,6 @@
 # Forum
 
-Esse projeto visa construir um site do estilo Forum do zero usando apenas Java(com Servlets e JSPs), HTML e SQL(postgreeSQL). O site foi construido usando o sistema MVC, portando os codigos estarão divididos em pacotes para que seja a procurar de algum código em específico seja mais facil.
+Esse projeto visa construir um site do estilo Forum do zero usando apenas Java(com Servlets e JSPs), HTML e SQL(postgreeSQL). O site foi construido usando o sistema MVC, portanto os codigos estarão divididos em pacotes para que seja a procurar de algum código em específico seja mais facil.
 
 ## Login
 
